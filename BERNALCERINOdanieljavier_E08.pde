@@ -2,16 +2,18 @@ import processing.sound.*;
 
 SoundFile ourSong;
 
-Waveform miForma;
-Waveform rectPlanetFigure;
 Amplitude amp;
-int muestras;
+
 Waveform miFormaCohete;
 Waveform miFormaMeteoro;
+Waveform rectPlanetFigure;
+
+
 int muestrasEstelaCohete = 1920 / 4;
 int muestrasMeteoro = 360;
+int muestrasRectPlanet = width / 4;
+int muestrasRoundPlanet = width / 4;
 
-float miDur;
 
 float yCohete = 0;
 
@@ -19,40 +21,27 @@ float sleep = 0;
 float trans = 0.25;
 
 
-float[] sumAmp;
 float sumAmpRoundPlanet;
 float[] sumAmpRectPlanet;
 float[] sumAmpCohete;
 float[] sumAmpMeteoro;
 
 
-int bpm = 128; // BPM (pulsos por minuto)
-int beat = 0; // Contador de pulsos
-float minutes;
-float interval; // Intervalo entre pulsos
-
-
 void setup() {
   fullScreen();
   // size(1250, 900);
-  muestras = width/4;
   sumAmpCohete = new float[muestrasEstelaCohete];
   sumAmpMeteoro = new float[muestrasMeteoro];
   ourSong = new SoundFile(this, "song.wav");
   miFormaCohete = new Waveform(this, muestrasEstelaCohete);
   miFormaMeteoro = new Waveform(this, muestrasMeteoro);
-  rectPlanetFigure = new Waveform(this, muestras);
-  sumAmp = new float[muestras];
-  sumAmpRectPlanet = new float[muestras];
-  miForma = new Waveform(this, muestras);
+  rectPlanetFigure = new Waveform(this, muestrasRectPlanet);
+  sumAmpRectPlanet = new float[muestrasRectPlanet];
   amp = new Amplitude(this);
-
-  interval = 60.0 / bpm * 1000;
 
   ourSong.play();
   miFormaCohete.input(ourSong);
   miFormaMeteoro.input(ourSong);
-  miForma.input(ourSong);
   rectPlanetFigure.input(ourSong);
   amp.input(ourSong);
     
@@ -227,14 +216,14 @@ void rectPlanet(int posX, int posY) {
   noFill();
   rectPlanetFigure.analyze();
   beginShape();
-  for (int numR = 0; numR < muestras; numR = numR + 1) {
+  for (int numR = 0; numR < muestrasRectPlanet; numR = numR + 1) {
     sumAmpRectPlanet[numR] = sumAmpRectPlanet[numR] + (rectPlanetFigure.data[numR] - sumAmpRectPlanet[numR]) * trans;
     
     float alto = map(sumAmpRectPlanet[numR], -1.0, 1.0, 0, height/2);
     float x = alto * cos(numR) + (width/2);
     float y = alto * sin(numR) + (height/2);
-    //rect((0+numR)*(width/muestras), height/2, width/muestras, alto);
-    //vertex((0+numR)*(width/muestras), alto);
+    //rect((0+numR)*(width/muestrasRectPlanet), height/2, width/muestrasRectPlanet, alto);
+    //vertex((0+numR)*(width/muestrasRectPlanet), alto);
     vertex(x, y);
   }
   endShape(CLOSE);
