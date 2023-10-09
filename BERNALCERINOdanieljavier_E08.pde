@@ -3,6 +3,8 @@ import processing.sound.*;
 SoundFile miCancion;
 
 Waveform miForma;
+Waveform rectPlanetFigure;
+Amplitude amp;
 int muestras;
 
 float miDur;
@@ -14,24 +16,39 @@ float sleep = 0;
 
 float trans = 0.25;
 float[] sumAmp;
+float sumAmpRoundPlanet;
+float[] sumAmpRectPlanet;
+
+
+int bpm = 128; // BPM (pulsos por minuto)
+int beat = 0; // Contador de pulsos
+float minutes;
+float interval; // Intervalo entre pulsos
+
 
 void setup() {
   fullScreen();
   // size(1250, 900);
   muestras = width/4;
   sumAmp = new float[muestras];
+  sumAmpRectPlanet = new float[muestras];
   miCancion = new SoundFile(this, "song.wav");
   miForma = new Waveform(this, muestras);
+  rectPlanetFigure = new Waveform(this, muestras);
+  amp = new Amplitude(this);
 
   miCancion.play();
   miForma.input(miCancion);
+  rectPlanetFigure.input(miCancion);
+  amp.input(miCancion);
+
+  interval = 60.0 / bpm * 1000;
 
   background(#003153);
   noStroke();
 }
 
 void draw() {
-  sleep = sleep + 1;
   noStroke();  
   background(#003153);
   stroke(#f5faf9);
@@ -42,15 +59,24 @@ void draw() {
   for (int numR = 0; numR < muestras; numR = numR + 1) {
     sumAmp[numR] = sumAmp[numR] + (miForma.data[numR] - sumAmp[numR]) * trans;
     float alto = map(sumAmp[numR], -1.0, 1.0, 0, height);
-    vertex((0+numR)*((width)/(4*muestras)), alto);
-    if (sleep%10==0) {
-      
+    if (millis() - beat >= interval) {
       y=alto;
+      print(128);
+      beat = millis();
+    }
+    if (numR >= muestras-10) {
+      vertex((0+numR)*((width)/(4*muestras)), y);
+    }
+    else {
+      vertex((0+numR)*((width)/(4*muestras)), alto);
     }
     
   }
   endShape();
   cohete(x,int(y),1);
+
+  //roundPlanet(width/2, height/2);
+  rectPlanet(width/2, height/2);
 }
 
 void cohete(int x, int y, int tamanio) {
@@ -128,3 +154,32 @@ void cohete(int x, int y, int tamanio) {
     endShape();
 }
 
+void roundPlanet(int posX, int posY) {
+
+  sumAmpRoundPlanet = sumAmpRoundPlanet + (amp.analyze() - sumAmpRoundPlanet) * trans;
+
+  float tam = map(sumAmpRoundPlanet, 0, 1, 0, 100);
+  fill(255, 255, 255, 100);
+  noStroke();
+  ellipse(posX, posY, tam, tam);
+
+}
+
+
+void rectPlanet(int posX, int posY) {
+  stroke(255, 255, 255, 100);
+  noFill();
+  rectPlanetFigure.analyze();
+  beginShape();
+  for (int numR = 0; numR < muestras; numR = numR + 1) {
+    sumAmpRectPlanet[numR] = sumAmpRectPlanet[numR] + (rectPlanetFigure.data[numR] - sumAmpRectPlanet[numR]) * trans;
+    
+    float alto = map(sumAmpRectPlanet[numR], -1.0, 1.0, 0, height/2);
+    float x = alto * cos(numR) + (width/2);
+    float y = alto * sin(numR) + (height/2);
+    //rect((0+numR)*(width/muestras), height/2, width/muestras, alto);
+    vertex((0+numR)*(width/muestras), alto);
+    vertex(x, y);
+  }
+  endShape(CLOSE);
+}
