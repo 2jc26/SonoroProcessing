@@ -11,36 +11,36 @@ float trans = 0.25;
 float[] sumAmp;
 
 void setup() {
-//   fullScreen();
-  size(1250, 900);
+  fullScreen();
+  // size(1250, 900);
   muestras = width;
   sumAmp = new float[muestras];
   miCancion = new SoundFile(this, "song.wav");
   miForma = new Waveform(this, muestras);
 
-//   miCancion.play();
-//   miForma.input(miCancion);
+  miCancion.play();
+  miForma.input(miCancion);
 
   background(255);
   noStroke();
 }
 
 void draw() {
-    cohete(200,200,1);
-//   noStroke();  
-//   fill(255, 255, 255, 50);
-//   rect(0, 0, width, height);
+  // cohete(200,200,1);
+  noStroke();  
+  fill(255, 255, 255, 50);
+  rect(0, 0, width, height);
 
-//   stroke(250, 20, 100);
-//   noFill();
-//   miForma.analyze();
-//   beginShape();
-//   for (int numR = 0; numR < muestras; numR = numR + 1) {
-//     sumAmp[numR] = sumAmp[numR] + (miForma.data[numR] - sumAmp[numR]) * trans;
-//     float alto = map(sumAmp[numR], -1.0, 1.0, 0, height);
-//     vertex((0+numR)*(width/muestras), alto);
-//   }
-//   endShape();
+  stroke(250, 20, 100);
+  noFill();
+  miForma.analyze();
+  beginShape();
+  for (int numR = 0; numR < muestras; numR = numR + 1) {
+    sumAmp[numR] = sumAmp[numR] + (miForma.data[numR] - sumAmp[numR]) * trans;
+    float alto = map(sumAmp[numR], -1.0, 1.0, 0, height);
+    vertex((0+numR)*(width/muestras), alto);
+  }
+  endShape();
 }
 
 void cohete(int x, int y, int tamanio) {
