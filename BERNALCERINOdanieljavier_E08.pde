@@ -78,9 +78,6 @@ void draw() {
   cohete((width/4)-30,int(yCohete),1);
 
   stroke(#f5faf9);
-
-  rectPlanet(width/2, height/2);
-  estrella(width/2, height/2, 0.5);
   showPlanet();
 
 
