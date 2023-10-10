@@ -15,6 +15,7 @@ Waveform rectPlanetFigure;
 int muestrasEstelaCohete = 1920 / 4;
 int muestrasMeteoro = 360;
 int muestrasRectPlanet = width / 4;
+int lineaCancion = -1;
 
 
 float yCohete = 0;
@@ -39,7 +40,7 @@ float tamPlanet;
 float posXMeteor;
 float posYMeteor;
 float tamMeteor;
-
+int y = 0;
 int ad = 0;
 
 void setup() {
@@ -71,33 +72,63 @@ void setup() {
     
   background(#003153);
   noStroke();
+  background(0);
+  // noLoop();
 }
 
 void draw() {
-  sleep = sleep + 1;
-  estelaCohete();
-  estrella_cayente(posXMeteor,posYMeteor,tamMeteor);
-  cohete((width/4)-30,int(yCohete),1);
+  // sleep = sleep + 1;
+  // estelaCohete();
+  // estrella_cayente(posXMeteor,posYMeteor,tamMeteor);
+  // cohete((width/4)-30,int(yCohete),1);
 
-  stroke(#f5faf9);
-  showPlanet();
+  // stroke(#f5faf9);
+  // showPlanet();
 
 
-  if (posXPlanet < -100) {
-    posXPlanet = width + 100;
-    posYPlanet = random(200, height-200);
-    tamPlanet = random(100, 400);
-  }
+  // if (posXPlanet < -100) {
+  //   posXPlanet = width + 100;
+  //   posYPlanet = random(200, height-200);
+  //   tamPlanet = random(100, 400);
+  // }
 
-  if (posYMeteor > height + 100) {
-    posXMeteor = width + 100;
-    posYMeteor = -100;
-    tamMeteor = random(25, 150);
-  }
+  // if (posYMeteor > height + 100) {
+  //   posXMeteor = width + 100;
+  //   posYMeteor = -100;
+  //   tamMeteor = random(25, 150);
+  // }
 
-  posXPlanet = posXPlanet - 1;
-  posXMeteor = posXMeteor - 2;
-  posYMeteor = posYMeteor + 2;
+  // posXPlanet = posXPlanet - 1;
+  // posXMeteor = posXMeteor - 2;
+  // posYMeteor = posYMeteor + 2;
+
+  background(0);
+  visualizadorLi();
+  // creadorLyric(0);
+  // y += 80;
+  // creadorLyric(1);
+  // y += 80;
+  // creadorLyric(2);
+  // y += 80;
+  // creadorLyric(3);
+  // y += 80;
+  // creadorLyric(4);
+  // y += 80;
+  // creadorLyric(5);
+  // y += 80;
+  // creadorLyric(6);
+  // y += 80;
+  // creadorLyric(7);
+  // y += 80;
+  // creadorLyric(8);
+  // y += 80;
+  // creadorLyric(9);
+  // y += 80;
+  // creadorLyric(10);
+  // y += 80;
+  // creadorLyric(11);
+  // y += 80;
+  // creadorLyric(12);
   
 }
 
@@ -278,6 +309,7 @@ void estrella(int x, int y, float tamanio) {
   endShape(CLOSE);
 
 }
+
 // 45 pixeles entre letra y letra. Espacios de 75 para palabras normales. 80 de alto
 void letras(int x, int y, String letra) {
   float tam = 0.125;
@@ -286,6 +318,94 @@ void letras(int x, int y, String letra) {
       if (letras.get(letra).get(j).get(i)) {
         estrella(x+int(i*(7.5)),y+int(j*(7.5)),tam); 
       }
+    }
+  }
+}
+
+void visualizadorLi() {
+  float posCan = ourSong.position();
+  if (posCan<12 && posCan>8.5) {
+    lineaCancion = 0;
+  } else if (posCan<16 && posCan>12) {
+    lineaCancion = 1;
+  } else if (posCan<=19 && posCan>17) {
+    lineaCancion = 2;
+  } else if (posCan<=23 && posCan>20) {
+    lineaCancion = 3;
+  } else if (posCan<=27 && posCan>24) {
+    lineaCancion = 4;
+  } else if (posCan<31 && posCan>27) {
+    lineaCancion = 5;
+  } else if (posCan<34 && posCan>31.5) {
+    lineaCancion = 6;
+  } else if (posCan<37 && posCan>35) {
+    lineaCancion = 7;
+  } else if (posCan<41 && posCan>37.5) {
+    lineaCancion = 8;
+  } else if (posCan<49 && posCan>42) {
+    lineaCancion = 9;
+  } else if (posCan<56 && posCan>50) {
+    lineaCancion = 10;
+  } else if (posCan<64 && posCan>57) {
+    lineaCancion = 11;
+  } else if (posCan<70 && posCan>65) {
+    lineaCancion = 12;
+  } else if (posCan<87 && posCan>83.5) {
+    lineaCancion = 13;
+  } else if (posCan<91.5 && posCan>87) {
+    lineaCancion = 14;
+  } else if (posCan<94 && posCan>92) {
+    lineaCancion = 15;
+  } else if (posCan<99 && posCan>95) {
+    lineaCancion = 16;
+  } else if (posCan<103 && posCan>=99) {
+    lineaCancion = 17;
+  } else if (posCan<106 && posCan>104) {
+    lineaCancion = 18;
+  } else if (posCan<109 && posCan>107) {
+    lineaCancion = 19;
+  } else if (posCan<112 && posCan>110) {
+    lineaCancion = 20;
+  } else if (posCan<117 && posCan>=112) {
+    lineaCancion = 21;
+  } else if (posCan<124 && posCan>118) {
+    lineaCancion = 22;
+  } else if (posCan<131 && posCan>126) {
+    lineaCancion = 23;
+  } else if (posCan<138 && posCan>132) {
+    lineaCancion = 24;
+  } else if (posCan<145 && posCan>=140) {
+    lineaCancion = 25;
+  } else if (posCan<170 && posCan>161) {
+    lineaCancion = 26;
+  } else if (posCan<177 && posCan>=170) {
+    lineaCancion = 27;
+  } else if (posCan<185 && posCan>177) {
+    lineaCancion = 28;
+  } else if (posCan<189 && posCan>=186) {
+    lineaCancion = 29;
+  }
+  if (lineaCancion > -1 && lineaCancion<letraCancion.size() && posCan<189) {
+    creadorLyric(lineaCancion);
+  }
+}
+
+void creadorLyric(int i) {
+  int x = 150;
+  y = height-140;
+  boolean cambio = false;
+  for (int j=0;j<letraCancion.get(i).size();j++) {
+    if (letraCancion.get(i).get(j) == " ") {
+      if (j >= 30 && !cambio) {
+        cambio = true;
+        x = 250;
+        y = y + 80;
+      } else {
+        x = x + 45;
+      }
+    } else {
+      letras(x,y,letraCancion.get(i).get(j));
+      x = x + 45;
     }
   }
 }
