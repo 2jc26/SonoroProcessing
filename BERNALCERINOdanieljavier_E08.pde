@@ -12,7 +12,6 @@ Waveform rectPlanetFigure;
 int muestrasEstelaCohete = 1920 / 4;
 int muestrasMeteoro = 360;
 int muestrasRectPlanet = width / 4;
-int muestrasRoundPlanet = width / 4;
 
 
 float yCohete = 0;
@@ -60,7 +59,8 @@ void draw() {
 
   stroke(#f5faf9);
 
-  rectPlanet(width/2, height/2);
+  roundPlanet(width/2, height/2, 300);
+  rectPlanet(width/2, height/2, 300);
   
 }
 
@@ -199,29 +199,29 @@ void estelaCohete() {
 }
 
 
-void roundPlanet(int posX, int posY) {
+void roundPlanet(int posX, int posY, float tam) {
 
   sumAmpRoundPlanet = sumAmpRoundPlanet + (amp.analyze() - sumAmpRoundPlanet) * trans;
 
-  float tam = map(sumAmpRoundPlanet, 0, 1, 0, 100);
+  float scale = map(sumAmpRoundPlanet, 0, 1, 0, tam);
   fill(255, 255, 255, 100);
   noStroke();
-  ellipse(posX, posY, tam, tam);
+  ellipse(posX, posY, scale, scale);
 
 }
 
 
-void rectPlanet(int posX, int posY) {
+void rectPlanet(int posX, int posY, float tam) {
   stroke(255, 255, 255, 100);
   noFill();
   rectPlanetFigure.analyze();
+
   beginShape();
   for (int numR = 0; numR < muestrasRectPlanet; numR = numR + 1) {
     sumAmpRectPlanet[numR] = sumAmpRectPlanet[numR] + (rectPlanetFigure.data[numR] - sumAmpRectPlanet[numR]) * trans;
-    
-    float alto = map(sumAmpRectPlanet[numR], -1.0, 1.0, 0, height/2);
-    float x = alto * cos(numR) + (width/2);
-    float y = alto * sin(numR) + (height/2);
+    float alto = map(sumAmpRectPlanet[numR], -1.0, 1.0, 0, tam/2);
+    float x = alto * cos(numR) + (posX);
+    float y = alto * sin(numR) + (posY);
     //rect((0+numR)*(width/muestrasRectPlanet), height/2, width/muestrasRectPlanet, alto);
     //vertex((0+numR)*(width/muestrasRectPlanet), alto);
     vertex(x, y);
