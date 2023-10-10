@@ -31,13 +31,38 @@ float[] sumAmpMeteoro;
 HashMap<String, ArrayList<ArrayList<Boolean>>> letras = new HashMap<String, ArrayList<ArrayList<Boolean>>>();
 ArrayList<ArrayList<String>> letraCancion = new ArrayList<ArrayList<String>>();
 
-int option;
-float posXPlanet;
-float posYPlanet;
+int option1;
+int option2;
+float posXPlanet0;
+float posYPlanet0;
+float posXPlanet1;
+float posYPlanet1;
+float posXPlanet2;
+float posYPlanet2;
+float posXPlanet3;
+float posYPlanet3;
+float posXPlanet4;
+float posYPlanet4;
+float posXPlanet5;
+float posYPlanet5;
 float tamPlanet;
 
-float posXMeteor;
-float posYMeteor;
+float posXMeteor0;
+float posYMeteor0;
+float posXMeteor1;
+float posYMeteor1;
+float posXMeteor2;
+float posYMeteor2;
+float posXMeteor3;
+float posYMeteor3;
+float posXMeteor4;
+float posYMeteor4;
+float posXMeteor5;
+float posYMeteor5;
+float posXMeteor6;
+float posYMeteor6;
+float posXMeteor7;
+float posYMeteor7;
 float tamMeteor;
 
 int ad = 0;
@@ -60,44 +85,60 @@ void setup() {
   rectPlanetFigure.input(ourSong);
   amp.input(ourSong);
 
-  option = 0;
-  posXPlanet = width + 100;
-  posYPlanet = random(200, height-200);
+  option1 = 0;
+  option2 = 1;
+  posXPlanet0 = width + 100;
+  posYPlanet0 = 100;
+  posXPlanet1 = width + 1000;
+  posYPlanet1 = 250;
+  posXPlanet2 = width + 650;
+  posYPlanet2 = 400;
+  posXPlanet3 = width + 1500;
+  posYPlanet3 = 550;
+  posXPlanet4 = width + 400;
+  posYPlanet4 = 700;
+  posXPlanet5 = width + 1200;
+  posYPlanet5 = 850;
   tamPlanet = random(100, 400);
 
-  posXMeteor = width + 100;
-  posYMeteor = -100;
-  tamMeteor = random(25, 150);
+  posXMeteor0 = width + 100;
+  posYMeteor0 = -100;
+  posXMeteor1 = width - 100;
+  posYMeteor1 = -100;
+  posXMeteor2 = width - 300;
+  posYMeteor2 = -100;
+  posXMeteor3 = width - 500;
+  posYMeteor3 = -100;
+  posXMeteor4 = width + 100;
+  posYMeteor4 = 100;
+  posXMeteor5 = width + 100;
+  posYMeteor5 = 300;
+  posXMeteor6 = width - 1100;
+  posYMeteor6 = -100;
+  posXMeteor7 = width + 100;
+  posYMeteor7 = 500;
+  tamMeteor = random(75, 135);
     
   background(#003153);
   noStroke();
 }
 
 void draw() {
+
   sleep = sleep + 1;
+  noStroke();  
+  background(#003153);
   estelaCohete();
-  estrella_cayente(posXMeteor,posYMeteor,tamMeteor);
+  showMeteor();
   cohete((width/4)-30,int(yCohete),1);
 
   stroke(#f5faf9);
   showPlanet();
-
-
-  if (posXPlanet < -100) {
-    posXPlanet = width + 100;
-    posYPlanet = random(200, height-200);
-    tamPlanet = random(100, 400);
-  }
-
-  if (posYMeteor > height + 100) {
-    posXMeteor = width + 100;
-    posYMeteor = -100;
-    tamMeteor = random(25, 150);
-  }
-
-  posXPlanet = posXPlanet - 1;
-  posXMeteor = posXMeteor - 2;
-  posYMeteor = posYMeteor + 2;
+  
+  fill(0);
+  noStroke();
+  rect(0, height-180, width, 180);
+  rect(0, 0, width, 50);
   
 }
 
@@ -211,8 +252,6 @@ void cohete(int x, int y, int tamanio) {
 }
 
 void estelaCohete() {
-  noStroke();  
-  background(#003153);
   stroke(#f5faf9);
   noFill();
   miFormaCohete.analyze();
@@ -294,35 +333,183 @@ void showPlanet() {
 
   float songPos = ourSong.position();
 
-  print(songPos + "\n");
+  if (songPos > 84 && songPos < 85) {
+    ad = 84;
+  }
+  if (songPos > 174 && songPos < 175) {
+    ad = 174;
+  }
 
-  if (songPos < 36 || songPos > 84) {
+  if ((songPos > 0 && songPos < 36) || (songPos > 84 && songPos < 110) || (songPos > 174)) {
     if (songPos > 0+ad && songPos < 2+ad) {
-        option = 1;
+        option1 = 1;
+        option2 = 0;
     } else if (songPos > 2+ad && songPos < 4.15+ad) {
-        option = 0;
+        option1 = 0;
+        option2 = 1;
     } else if (songPos > 4.15+ad && songPos < 6.17+ad) {
-        option = 1;
+        option1 = 1;
+        option2 = 0;
     } else if (songPos > 6.17+ad && songPos < 8+ad) {
-        option = 0;
+        option1 = 0;
+        option2 = 1;
     } else if (songPos > 8+ad && songPos < 9.8+ad) {
-        option = 1;
+        option1 = 1;
+        option2 = 0;
     } else if (songPos > 9.8+ad && songPos < 11.7+ad) {
-        option = 0;
+        option1 = 0;
+        option2 = 1;
     } else if (songPos > 11.7+ad && songPos < 13.7+ad) {
-        option = 1;
+        option1 = 1;
+        option2 = 0;
     } else if (songPos > 13.6+ad && songPos < 15.4+ad) {
-        option = 0;
+        option1 = 0;
+        option2 = 1;
     } else if (songPos > 15.4+ad && songPos < 18+ad) {
-        option = 1;
+        option1 = 1;
+        option2 = 0;
         ad += 18;
     }
 
-    if (option == 0) {
-      roundPlanet(posXPlanet, posYPlanet, tamPlanet);
-    } else if (option == 1) {
-      rectPlanet(posXPlanet, posYPlanet, tamPlanet);
+    if (option1 == 0) {
+      roundPlanet(posXPlanet0, posYPlanet0, tamPlanet);
+      roundPlanet(posXPlanet1, posYPlanet1, tamPlanet);
+      roundPlanet(posXPlanet2, posYPlanet2, tamPlanet);
+    } else if (option1 == 1) {
+      rectPlanet(posXPlanet0, posYPlanet0, tamPlanet);
+      rectPlanet(posXPlanet1, posYPlanet1, tamPlanet);
+      rectPlanet(posXPlanet2, posYPlanet2, tamPlanet);
     }
+    if (option2 == 0) {
+      roundPlanet(posXPlanet3, posYPlanet3, tamPlanet);
+      roundPlanet(posXPlanet4, posYPlanet4, tamPlanet);
+      roundPlanet(posXPlanet5, posYPlanet5, tamPlanet);
+    } else if (option2 == 1) {
+      rectPlanet(posXPlanet3, posYPlanet3, tamPlanet);
+      rectPlanet(posXPlanet4, posYPlanet4, tamPlanet);
+      rectPlanet(posXPlanet5, posYPlanet5, tamPlanet);
+    }
+
+    if (posXPlanet0 < -100) {
+      posXPlanet0 = width + 100;
+      posYPlanet0 = 150;
+      tamPlanet = random(100, 400);
+    }
+    if (posXPlanet1 < -100) {
+      posXPlanet1 = width + 100;
+      posYPlanet1 = 250;
+      tamPlanet = random(100, 400);
+    }
+    if (posXPlanet2 < -100) {
+      posXPlanet2 = width + 100;
+      posYPlanet2 = 400;
+      tamPlanet = random(100, 400);
+    }
+    if (posXPlanet3 < -100) {
+      posXPlanet3 = width + 100;
+      posYPlanet3 = 550;
+      tamPlanet = random(100, 400);
+    }
+    if (posXPlanet4 < -100) {
+      posXPlanet4 = width + 100;
+      posYPlanet4 = 700;
+      tamPlanet = random(100, 400);
+    }
+    if (posXPlanet5 < -100) {
+      posXPlanet5 = width + 100;
+      posYPlanet5 = 850;
+      tamPlanet = random(100, 400);
+    }
+
+    posXPlanet0 = posXPlanet0 - 3;
+    posXPlanet1 = posXPlanet1 - 3;
+    posXPlanet2 = posXPlanet2 - 3;
+    posXPlanet3 = posXPlanet3 - 3;
+    posXPlanet4 = posXPlanet4 - 3;
+    posXPlanet5 = posXPlanet5 - 3;
+  }
+
+}
+
+void showMeteor() {
+  float songPos = ourSong.position();
+
+  if ((songPos > 36 && songPos < 84) || (songPos > 114)) {
+
+    if (songPos > 39) {
+      estrella_cayente(posXMeteor0, posYMeteor0, tamMeteor);
+      posXMeteor0 = posXMeteor0 - 2;
+      posYMeteor0 = posYMeteor0 + 2;
+    }
+    if (songPos > 40.5) {
+      estrella_cayente(posXMeteor1, posYMeteor1, tamMeteor);
+      posXMeteor1 = posXMeteor1 - 2;
+      posYMeteor1 = posYMeteor1 + 2;
+    }
+    if (songPos > 43) {
+      estrella_cayente(posXMeteor2, posYMeteor2, tamMeteor);
+      posXMeteor2 = posXMeteor2 - 2;
+      posYMeteor2 = posYMeteor2 + 2;
+    }
+    if (songPos > 44.5) {
+      estrella_cayente(posXMeteor3, posYMeteor3, tamMeteor);
+      posXMeteor3 = posXMeteor3 - 2;
+      posYMeteor3 = posYMeteor3 + 2;
+    }
+    if (songPos > 47) {
+      estrella_cayente(posXMeteor4, posYMeteor4, tamMeteor);
+      posXMeteor4 = posXMeteor4 - 2;
+      posYMeteor4 = posYMeteor4 + 2;
+    }
+    if (songPos > 49.5) {
+      estrella_cayente(posXMeteor5, posYMeteor5, tamMeteor);
+      posXMeteor5 = posXMeteor5 - 2;
+      posYMeteor5 = posYMeteor5 + 2;
+    }
+    if (songPos > 52) {
+      estrella_cayente(posXMeteor6, posYMeteor6, tamMeteor);
+      posXMeteor6 = posXMeteor6 - 2;
+      posYMeteor6 = posYMeteor6 + 2;
+    }
+    if (songPos > 54) {
+      estrella_cayente(posXMeteor7, posYMeteor7, tamMeteor);
+      posXMeteor0 = posXMeteor0 - 2;
+      posYMeteor0 = posYMeteor0 + 2;
+    }
+
+    if (posYMeteor0 > height + 100) {
+      posXMeteor0 = width + 100;
+      posYMeteor0 = -100;
+    }
+    if (posYMeteor1 > height + 100) {
+      posXMeteor1 = width - 100;
+      posYMeteor1 = -100;
+    }
+    if (posYMeteor2 > height + 100) {
+      posXMeteor2 = width - 300;
+      posYMeteor2 = -100;
+    }
+    if (posYMeteor3 > height + 100) {
+      posXMeteor3 = width - 500;
+      posYMeteor3 = -100;
+    }
+    if (posYMeteor4 > height + 100) {
+      posXMeteor4 = width + 100;
+      posYMeteor4 = 100;
+    }
+    if (posYMeteor5 > height + 100) {
+      posXMeteor5 = width + 100;
+      posYMeteor5 = 300;
+    }
+    if (posYMeteor6 > height + 100) {
+      posXMeteor6 = width - 1100;
+      posYMeteor6 = -100;
+    }
+    if (posYMeteor7 > height + 100) {
+      posXMeteor7 = width + 100;
+      posYMeteor7 = 500;
+    }
+
   }
 
 }
