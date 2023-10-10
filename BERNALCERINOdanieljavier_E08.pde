@@ -2,12 +2,13 @@ import processing.sound.*;
 
 SoundFile ourSong;
 
+float songDuration;
+
 Amplitude amp;
 
 Waveform miFormaCohete;
 Waveform miFormaMeteoro;
 Waveform rectPlanetFigure;
-
 
 int muestrasEstelaCohete = 1920 / 4;
 int muestrasMeteoro = 360;
@@ -24,6 +25,18 @@ float sumAmpRoundPlanet;
 float[] sumAmpRectPlanet;
 float[] sumAmpCohete;
 float[] sumAmpMeteoro;
+
+
+int option;
+float posXPlanet;
+float posYPlanet;
+float tamPlanet;
+
+float posXMeteor;
+float posYMeteor;
+float tamMeteor;
+
+int ad = 0;
 
 
 void setup() {
@@ -43,6 +56,15 @@ void setup() {
   miFormaMeteoro.input(ourSong);
   rectPlanetFigure.input(ourSong);
   amp.input(ourSong);
+
+  option = 0;
+  posXPlanet = width + 100;
+  posYPlanet = random(200, height-200);
+  tamPlanet = random(100, 400);
+
+  posXMeteor = width + 100;
+  posYMeteor = -100;
+  tamMeteor = random(25, 150);
     
   background(#003153);
   noStroke();
@@ -54,13 +76,29 @@ void setup() {
 void draw() {
   sleep = sleep + 1;
   estelaCohete();
-  estrella_cayente(1200,800,200);
+  estrella_cayente(posXMeteor,posYMeteor,tamMeteor);
   cohete((width/4)-30,int(yCohete),1);
 
   stroke(#f5faf9);
 
-  roundPlanet(width/2, height/2, 300);
-  rectPlanet(width/2, height/2, 300);
+  showPlanet();
+
+
+  if (posXPlanet < -100) {
+    posXPlanet = width + 100;
+    posYPlanet = random(200, height-200);
+    tamPlanet = random(100, 400);
+  }
+
+  if (posYMeteor > height + 100) {
+    posXMeteor = width + 100;
+    posYMeteor = -100;
+    tamMeteor = random(25, 150);
+  }
+
+  posXPlanet = posXPlanet - 1;
+  posXMeteor = posXMeteor - 2;
+  posYMeteor = posYMeteor + 2;
   
 }
 
@@ -71,7 +109,7 @@ void draw() {
   al borde la estrella, valor máximo de tamanio para que redoble el tamaño del meteoro. Número de estelas: 7 con variación de angulo
   desde 45 reduciendo y aumentando respectivamente el valor en 5 grados por estela.
  */
-void estrella_cayente(int xInicio, int yInicio, int tamanio) {
+void estrella_cayente(float xInicio, float yInicio, float tamanio) {
   stroke(#b5b141);
   strokeWeight(4);
   for (int i = 0; i < 7; i++) {
@@ -199,7 +237,7 @@ void estelaCohete() {
 }
 
 
-void roundPlanet(int posX, int posY, float tam) {
+void roundPlanet(float posX, float posY, float tam) {
 
   sumAmpRoundPlanet = sumAmpRoundPlanet + (amp.analyze() - sumAmpRoundPlanet) * trans;
 
@@ -211,7 +249,7 @@ void roundPlanet(int posX, int posY, float tam) {
 }
 
 
-void rectPlanet(int posX, int posY, float tam) {
+void rectPlanet(float posX, float posY, float tam) {
   stroke(255, 255, 255, 100);
   noFill();
   rectPlanetFigure.analyze();
@@ -227,4 +265,41 @@ void rectPlanet(int posX, int posY, float tam) {
     vertex(x, y);
   }
   endShape(CLOSE);
+}
+
+void showPlanet() {
+
+  float songPos = ourSong.position();
+
+  print(songPos + "\n");
+
+  if (songPos < 36 || songPos > 84) {
+    if (songPos > 0+ad && songPos < 2+ad) {
+        option = 1;
+    } else if (songPos > 2+ad && songPos < 4.15+ad) {
+        option = 0;
+    } else if (songPos > 4.15+ad && songPos < 6.17+ad) {
+        option = 1;
+    } else if (songPos > 6.17+ad && songPos < 8+ad) {
+        option = 0;
+    } else if (songPos > 8+ad && songPos < 9.8+ad) {
+        option = 1;
+    } else if (songPos > 9.8+ad && songPos < 11.7+ad) {
+        option = 0;
+    } else if (songPos > 11.7+ad && songPos < 13.7+ad) {
+        option = 1;
+    } else if (songPos > 13.6+ad && songPos < 15.4+ad) {
+        option = 0;
+    } else if (songPos > 15.4+ad && songPos < 18+ad) {
+        option = 1;
+        ad += 18;
+    }
+
+    if (option == 0) {
+      roundPlanet(posXPlanet, posYPlanet, tamPlanet);
+    } else if (option == 1) {
+      rectPlanet(posXPlanet, posYPlanet, tamPlanet);
+    }
+  }
+
 }
