@@ -22,12 +22,18 @@ float yCohete = 0;
 
 float sleep = 0;
 float trans = 0.25;
+int actualMeteoro = 0;
+int actualPlanetas = 0;
+
+boolean cambioMeteoro = false;
+boolean cambioPlanetas = false;
 
 
 float sumAmpRoundPlanet;
 float[] sumAmpRectPlanet;
 float[] sumAmpCohete;
 float[] sumAmpMeteoro;
+color[] colores;
 
 HashMap<String, ArrayList<ArrayList<Boolean>>> letras = new HashMap<String, ArrayList<ArrayList<Boolean>>>();
 ArrayList<ArrayList<String>> letraCancion = new ArrayList<ArrayList<String>>();
@@ -74,6 +80,12 @@ void setup() {
   agregarEstrellitas();
   leerLetra();
   fullScreen();
+  colores = new color[4];
+  colores[0] = color(#98DFAF);
+  colores[1] = color(#331832);
+  colores[2] = color(#E7E08B);
+  colores[3] = color(#f5faf9);
+
   sumAmpCohete = new float[muestrasEstelaCohete];
   sumAmpMeteoro = new float[muestrasMeteoro];
   ourSong = new SoundFile(this, "song.wav");
@@ -132,7 +144,6 @@ void draw() {
   sleep = sleep + 1;
   
   background(#003153);
-  
   noStroke();  
   fill(#10f5faf9);
   dibujarEstrellas();
@@ -171,7 +182,7 @@ void estrella_cayente(float xInicio, float yInicio, float tamanio) {
     line(xInicio,yInicio,xFinal,yFinal);
   }
   miFormaMeteoro.analyze();
-  stroke(#f5faf9);
+  stroke(colores[actualMeteoro]);
   strokeWeight(1);
   for (int numR = 0; numR < muestrasMeteoro; numR = numR + 1) {
     if (numR%6==0) {
@@ -286,14 +297,14 @@ void roundPlanet(float posX, float posY, float tam) {
   sumAmpRoundPlanet = sumAmpRoundPlanet + (amp.analyze() - sumAmpRoundPlanet) * trans;
 
   float scale = map(sumAmpRoundPlanet, 0, 1, 0, tam);
-  fill(255, 255, 255, 100);
+  fill(colores[actualPlanetas], 100);
   noStroke();
   ellipse(posX, posY, scale, scale);
 
 }
 
 void rectPlanet(float posX, float posY, float tam) {
-  stroke(255, 255, 255, 100);
+  stroke(colores[actualPlanetas], 100);
   noFill();
   rectPlanetFigure.analyze();
 
@@ -492,19 +503,47 @@ void showPlanet() {
     }
 
     if (option1 == 0) {
+      if (!cambioPlanetas) {
+        cambioPlanetas = true;
+        int anteriorPlanetas = actualPlanetas;
+        while (actualPlanetas == anteriorPlanetas) {
+          actualPlanetas = int(random(0, 4));
+        }
+      }
       roundPlanet(posXPlanet0, posYPlanet0, tamPlanet);
       roundPlanet(posXPlanet1, posYPlanet1, tamPlanet);
       roundPlanet(posXPlanet2, posYPlanet2, tamPlanet);
     } else if (option1 == 1) {
+      if (cambioPlanetas) {
+        cambioPlanetas = false;
+        int anteriorPlanetas = actualPlanetas;
+        while (actualPlanetas == anteriorPlanetas) {
+          actualPlanetas = int(random(0, 4));
+        }
+      }
       rectPlanet(posXPlanet0, posYPlanet0, tamPlanet);
       rectPlanet(posXPlanet1, posYPlanet1, tamPlanet);
       rectPlanet(posXPlanet2, posYPlanet2, tamPlanet);
     }
     if (option2 == 0) {
+      if (!cambioPlanetas) {
+        cambioPlanetas = true;
+        int anteriorPlanetas = actualPlanetas;
+        while (actualPlanetas == anteriorPlanetas) {
+          actualPlanetas = int(random(0, 4));
+        }
+      }
       roundPlanet(posXPlanet3, posYPlanet3, tamPlanet);
       roundPlanet(posXPlanet4, posYPlanet4, tamPlanet);
       roundPlanet(posXPlanet5, posYPlanet5, tamPlanet);
     } else if (option2 == 1) {
+      if (cambioPlanetas) {
+        cambioPlanetas = false;
+        int anteriorPlanetas = actualPlanetas;
+        while (actualPlanetas == anteriorPlanetas) {
+          actualPlanetas = int(random(0, 4));
+        }
+      }
       rectPlanet(posXPlanet3, posYPlanet3, tamPlanet);
       rectPlanet(posXPlanet4, posYPlanet4, tamPlanet);
       rectPlanet(posXPlanet5, posYPlanet5, tamPlanet);
@@ -557,41 +596,104 @@ void showMeteor() {
   if ((songPos > 36 && songPos < 84) || (songPos > 114)) {
 
     if (songPos > 39) {
+      if (!cambioMeteoro) {
+        cambioMeteoro = true;
+        int anteriorMeteoro = actualMeteoro;
+        while (actualMeteoro == anteriorMeteoro) {
+          actualMeteoro = int(random(0, 4));
+        }
+      }
       estrella_cayente(posXMeteor0, posYMeteor0, tamMeteor);
       posXMeteor0 = posXMeteor0 - 2;
       posYMeteor0 = posYMeteor0 + 2;
     }
     if (songPos > 40.5) {
+      if (cambioMeteoro) {
+        cambioMeteoro = false;
+        int anteriorMeteoro = actualMeteoro;
+        while (actualMeteoro == anteriorMeteoro) {
+          actualMeteoro = int(random(0, 4));
+          
+        }
+      }
       estrella_cayente(posXMeteor1, posYMeteor1, tamMeteor);
       posXMeteor1 = posXMeteor1 - 2;
       posYMeteor1 = posYMeteor1 + 2;
     }
     if (songPos > 43) {
+      if (!cambioMeteoro) {
+        cambioMeteoro = true;
+        int anteriorMeteoro = actualMeteoro;
+        while (actualMeteoro == anteriorMeteoro) {
+          actualMeteoro = int(random(0, 4));
+          
+        }
+      }
       estrella_cayente(posXMeteor2, posYMeteor2, tamMeteor);
       posXMeteor2 = posXMeteor2 - 2;
       posYMeteor2 = posYMeteor2 + 2;
     }
     if (songPos > 44.5) {
+      if (cambioMeteoro) {
+        cambioMeteoro = false;
+        int anteriorMeteoro = actualMeteoro;
+        while (actualMeteoro == anteriorMeteoro) {
+          actualMeteoro = int(random(0, 4));
+          
+        }
+      }
       estrella_cayente(posXMeteor3, posYMeteor3, tamMeteor);
       posXMeteor3 = posXMeteor3 - 2;
       posYMeteor3 = posYMeteor3 + 2;
     }
     if (songPos > 47) {
+      if (!cambioMeteoro) {
+        cambioMeteoro = true;
+        int anteriorMeteoro = actualMeteoro;
+        while (actualMeteoro == anteriorMeteoro) {
+          actualMeteoro = int(random(0, 4));
+          
+        }
+      }
       estrella_cayente(posXMeteor4, posYMeteor4, tamMeteor);
       posXMeteor4 = posXMeteor4 - 2;
       posYMeteor4 = posYMeteor4 + 2;
     }
     if (songPos > 49.5) {
+      if (cambioMeteoro) {
+        cambioMeteoro = false;
+        int anteriorMeteoro = actualMeteoro;
+        while (actualMeteoro == anteriorMeteoro) {
+          actualMeteoro = int(random(0, 4));
+          
+        }
+      }
       estrella_cayente(posXMeteor5, posYMeteor5, tamMeteor);
       posXMeteor5 = posXMeteor5 - 2;
       posYMeteor5 = posYMeteor5 + 2;
     }
     if (songPos > 52) {
+      if (!cambioMeteoro) {
+        cambioMeteoro = true;
+        int anteriorMeteoro = actualMeteoro;
+        while (actualMeteoro == anteriorMeteoro) {
+          actualMeteoro = int(random(0, 4));
+          
+        }
+      }
       estrella_cayente(posXMeteor6, posYMeteor6, tamMeteor);
       posXMeteor6 = posXMeteor6 - 2;
       posYMeteor6 = posYMeteor6 + 2;
     }
     if (songPos > 54) {
+      if (cambioMeteoro) {
+        cambioMeteoro = false;
+        int anteriorMeteoro = actualMeteoro;
+        while (actualMeteoro == anteriorMeteoro) {
+          actualMeteoro = int(random(0, 4));
+          
+        }
+      }
       estrella_cayente(posXMeteor7, posYMeteor7, tamMeteor);
       posXMeteor0 = posXMeteor0 - 2;
       posYMeteor0 = posYMeteor0 + 2;
