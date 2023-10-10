@@ -4,6 +4,8 @@ import java.util.HashMap;
 
 SoundFile ourSong;
 
+float songDuration;
+
 Amplitude amp;
 
 Waveform miFormaCohete;
@@ -13,7 +15,6 @@ Waveform rectPlanetFigure;
 int muestrasEstelaCohete = 1920 / 4;
 int muestrasMeteoro = 360;
 int muestrasRectPlanet = width / 4;
-int muestrasRoundPlanet = width / 4;
 
 
 float yCohete = 0;
@@ -29,10 +30,20 @@ float[] sumAmpMeteoro;
 
 HashMap<String, ArrayList<ArrayList<Boolean>>> letras = new HashMap<String, ArrayList<ArrayList<Boolean>>>();
 
+int option;
+float posXPlanet;
+float posYPlanet;
+float tamPlanet;
+
+float posXMeteor;
+float posYMeteor;
+float tamMeteor;
+
+int ad = 0;
+
 void setup() {
   agregarLetras();
   fullScreen();
-  // size(1250, 900);
   sumAmpCohete = new float[muestrasEstelaCohete];
   sumAmpMeteoro = new float[muestrasMeteoro];
   ourSong = new SoundFile(this, "song.wav");
@@ -46,24 +57,48 @@ void setup() {
   miFormaMeteoro.input(ourSong);
   rectPlanetFigure.input(ourSong);
   amp.input(ourSong);
+
+  option = 0;
+  posXPlanet = width + 100;
+  posYPlanet = random(200, height-200);
+  tamPlanet = random(100, 400);
+
+  posXMeteor = width + 100;
+  posYMeteor = -100;
+  tamMeteor = random(25, 150);
     
   background(#003153);
   noStroke();
 }
 
-
-
-
 void draw() {
   sleep = sleep + 1;
   estelaCohete();
-  estrella_cayente(1200,800,200);
+  estrella_cayente(posXMeteor,posYMeteor,tamMeteor);
   cohete((width/4)-30,int(yCohete),1);
 
   stroke(#f5faf9);
 
   rectPlanet(width/2, height/2);
   estrella(width/2, height/2, 0.5);
+  showPlanet();
+
+
+  if (posXPlanet < -100) {
+    posXPlanet = width + 100;
+    posYPlanet = random(200, height-200);
+    tamPlanet = random(100, 400);
+  }
+
+  if (posYMeteor > height + 100) {
+    posXMeteor = width + 100;
+    posYMeteor = -100;
+    tamMeteor = random(25, 150);
+  }
+
+  posXPlanet = posXPlanet - 1;
+  posXMeteor = posXMeteor - 2;
+  posYMeteor = posYMeteor + 2;
   
 }
 
@@ -74,7 +109,7 @@ void draw() {
   al borde la estrella, valor máximo de tamanio para que redoble el tamaño del meteoro. Número de estelas: 7 con variación de angulo
   desde 45 reduciendo y aumentando respectivamente el valor en 5 grados por estela.
  */
-void estrella_cayente(int xInicio, int yInicio, int tamanio) {
+void estrella_cayente(float xInicio, float yInicio, float tamanio) {
   stroke(#b5b141);
   strokeWeight(4);
   for (int i = 0; i < 7; i++) {
@@ -100,8 +135,6 @@ void estrella_cayente(int xInicio, int yInicio, int tamanio) {
   }
 
 }
-
-
 
 void cohete(int x, int y, int tamanio) {
   beginShape();
@@ -201,32 +234,28 @@ void estelaCohete() {
   endShape();
 }
 
-
-void roundPlanet(int posX, int posY) {
+void roundPlanet(float posX, float posY, float tam) {
 
   sumAmpRoundPlanet = sumAmpRoundPlanet + (amp.analyze() - sumAmpRoundPlanet) * trans;
 
-  float tam = map(sumAmpRoundPlanet, 0, 1, 0, 100);
+  float scale = map(sumAmpRoundPlanet, 0, 1, 0, tam);
   fill(255, 255, 255, 100);
   noStroke();
-  ellipse(posX, posY, tam, tam);
+  ellipse(posX, posY, scale, scale);
 
 }
 
-
-void rectPlanet(int posX, int posY) {
+void rectPlanet(float posX, float posY, float tam) {
   stroke(255, 255, 255, 100);
   noFill();
   rectPlanetFigure.analyze();
+
   beginShape();
   for (int numR = 0; numR < muestrasRectPlanet; numR = numR + 1) {
     sumAmpRectPlanet[numR] = sumAmpRectPlanet[numR] + (rectPlanetFigure.data[numR] - sumAmpRectPlanet[numR]) * trans;
-    
-    float alto = map(sumAmpRectPlanet[numR], -1.0, 1.0, 0, height/2);
-    float x = alto * cos(numR) + (width/2);
-    float y = alto * sin(numR) + (height/2);
-    //rect((0+numR)*(width/muestrasRectPlanet), height/2, width/muestrasRectPlanet, alto);
-    //vertex((0+numR)*(width/muestrasRectPlanet), alto);
+    float alto = map(sumAmpRectPlanet[numR], -1.0, 1.0, 0, tam/2);
+    float x = alto * cos(numR) + (posX);
+    float y = alto * sin(numR) + (posY);
     vertex(x, y);
   }
   endShape(CLOSE);
@@ -260,6 +289,43 @@ void letras(int x, int y, String letra) {
       }
     }
   }
+}
+
+void showPlanet() {
+
+  float songPos = ourSong.position();
+
+  print(songPos + "\n");
+
+  if (songPos < 36 || songPos > 84) {
+    if (songPos > 0+ad && songPos < 2+ad) {
+        option = 1;
+    } else if (songPos > 2+ad && songPos < 4.15+ad) {
+        option = 0;
+    } else if (songPos > 4.15+ad && songPos < 6.17+ad) {
+        option = 1;
+    } else if (songPos > 6.17+ad && songPos < 8+ad) {
+        option = 0;
+    } else if (songPos > 8+ad && songPos < 9.8+ad) {
+        option = 1;
+    } else if (songPos > 9.8+ad && songPos < 11.7+ad) {
+        option = 0;
+    } else if (songPos > 11.7+ad && songPos < 13.7+ad) {
+        option = 1;
+    } else if (songPos > 13.6+ad && songPos < 15.4+ad) {
+        option = 0;
+    } else if (songPos > 15.4+ad && songPos < 18+ad) {
+        option = 1;
+        ad += 18;
+    }
+
+    if (option == 0) {
+      roundPlanet(posXPlanet, posYPlanet, tamPlanet);
+    } else if (option == 1) {
+      rectPlanet(posXPlanet, posYPlanet, tamPlanet);
+    }
+  }
+
 }
 
 void agregarLetras() {
