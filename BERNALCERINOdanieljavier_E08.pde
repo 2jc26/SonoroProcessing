@@ -432,7 +432,7 @@ void showPlanet() {
     ad = 174;
   }
 
-  if ((songPos > 0 && songPos < 36) || (songPos > 84 && songPos < 110) || (songPos > 174)) {
+  if ((songPos > 0 && songPos < 39) || (songPos > 84 && songPos < 114) || (songPos > 174)) {
     if (songPos > 0+ad && songPos < 2+ad) {
         option1 = 1;
         option2 = 0;
