@@ -31,6 +31,7 @@ float[] sumAmpMeteoro;
 
 HashMap<String, ArrayList<ArrayList<Boolean>>> letras = new HashMap<String, ArrayList<ArrayList<Boolean>>>();
 ArrayList<ArrayList<String>> letraCancion = new ArrayList<ArrayList<String>>();
+ArrayList<ArrayList<Float>> corEstrellas = new ArrayList<ArrayList<Float>>();
 
 int option1;
 int option2;
@@ -70,6 +71,7 @@ int ad = 0;
 
 void setup() {
   agregarLetras();
+  agregarEstrellitas();
   leerLetra();
   fullScreen();
   sumAmpCohete = new float[muestrasEstelaCohete];
@@ -128,8 +130,12 @@ void setup() {
 void draw() {
 
   sleep = sleep + 1;
-  noStroke();  
+  
   background(#003153);
+  
+  noStroke();  
+  fill(#10f5faf9);
+  dibujarEstrellas();
   estelaCohete();
   showMeteor();
   cohete((width/4)-30,int(yCohete),1);
@@ -302,9 +308,30 @@ void rectPlanet(float posX, float posY, float tam) {
   endShape(CLOSE);
 }
 
+void agregarEstrellitas() {
+  for (int i=0;i<50;i++) {
+    ArrayList<Float> estrella1 = new ArrayList<Float>();
+    float x = random(0, width);
+    float y = random(100, height-180);
+    if (x<width/4+30 && y>300 && y<700) {
+      x = random(0, width);
+      y = random(100, height-180);
+    }
+    estrella1.add(x);
+    estrella1.add(y);
+    estrella1.add(random(0.5, 2.5));
+    corEstrellas.add(estrella1);
+  }
+}
+
+void dibujarEstrellas() {
+  for (int i=0;i<corEstrellas.size();i++) {
+    estrella(int(corEstrellas.get(i).get(0)), int(corEstrellas.get(i).get(1)), corEstrellas.get(i).get(2));
+  }
+}
 
 void estrella(int x, int y, float tamanio) {
-  stroke(255);
+  
   strokeWeight(1);
   beginShape();
   vertex(x, y + int(20 * tamanio));
@@ -334,6 +361,7 @@ void letras(int x, int y, String letra) {
 }
 
 void visualizadorLi() {
+  stroke(255);
   float posCan = ourSong.position();
   if (posCan<12 && posCan>8.5) {
     lineaCancion = 0;
